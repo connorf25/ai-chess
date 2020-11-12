@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="chessboard-row" v-for="(row, i) in chessboardState" :key="i">
-      <span class="chessboard-square" v-for="(piece, j) in row" :key="j" @click="generateMove(piece, i, j)">
-        <ChessboardSquare :piece="piece" :isAlternative="i % 2 ? (j % 2 ? true : false) : (j % 2 ? false : true)" />
+    <div class="chessboard-row" v-for="(row, y) in chessboardState" :key="y">
+      <span class="chessboard-square" v-for="(piece, x) in row" :key="x" @click="highlightMoveSquares(piece, x, y)">
+        <ChessboardSquare :piece="piece" :isAlternative="y % 2 ? (x % 2 ? true : false) : (x % 2 ? false : true)" :isHighlighted="isHighlighted(x, y)" />
       </span>
     </div>
   </div>
@@ -17,14 +17,29 @@ export default {
     ChessboardSquare
   },
   methods: {
-    generateMove(piece, i, j) {
-      if(piece) {
-        console.log(i, j)
+    isHighlighted(x, y) {
+      return this.highlightedSquares.find(el => el[0] === x && el[1] === y) ? true : false;
+    },
+    highlightMoveSquares(piece, x, y) {
+      this.selectedPiece = piece;
+      this.highlightedSquares = this.generatePossibleMoves(piece, x, y);
+      console.log(this.highlightedSquares);
+    },
+    generatePossibleMoves(piece, x, y) {
+      switch(piece) {
+        case 'P':
+          return [[x, y-1]];
+        case 'p':
+          return [[x, y+1]];
+        default:
+          return [];
       }
     }
   },
   data() {
     return {
+      selectedPiece: '',
+      highlightedSquares: [],
       chessboardState: [
         ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
         ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],

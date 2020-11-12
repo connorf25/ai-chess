@@ -1,5 +1,5 @@
 <template>
-  <div :class="isAlternative ? 'chess-square dark' : 'chess-square light'">
+  <div :class="generateClass()">
     {{piece}}
   </div>
 </template>
@@ -9,7 +9,20 @@ export default {
   name: 'ChessboardSquare',
   props: {
     isAlternative: Boolean,
+    isHighlighted: Boolean,
     piece: String
+  },
+  methods: {
+    generateClass() {
+      let returnClass = "chess-square";
+      if (this.isAlternative)
+        returnClass += " light";
+      else
+        returnClass += " dark";
+      if (this.isHighlighted)
+        returnClass += " highlight";
+      return returnClass
+    }
   }
 }
 </script>
@@ -27,5 +40,8 @@ export default {
 }
 .dark {
   background-color: rgb(73, 83, 25);
+}
+.highlight {
+  background-color: aqua;
 }
 </style>
