@@ -1,6 +1,6 @@
 <template>
   <div :class="generateClass()">
-    {{piece}}
+    <img v-if="piece" :src="getImgUrl(piece)" />
   </div>
 </template>
 
@@ -13,6 +13,10 @@ export default {
     piece: String
   },
   methods: {
+    getImgUrl(piece) {
+      var images = require.context('../assets/pieces', false, /\.png$/)
+      return images('./' + piece + ".png")
+    },
     generateClass() {
       let returnClass = "chess-square";
       if (this.isAlternative)
@@ -30,8 +34,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .chess-square {
-  height: 50px;
-  width: 50px;
+  height: 60px;
+  width: 60px;
   margin: 0px;
   border: 1px solid black;
 }
@@ -39,7 +43,7 @@ export default {
   background-color: white;
 }
 .dark {
-  background-color: rgb(73, 83, 25);
+  background-color: rgb(120, 120, 41);
 }
 .highlight {
   background-color: aqua;
