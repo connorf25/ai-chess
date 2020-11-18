@@ -39,15 +39,12 @@ export default {
       }
       // Get possible moves for piece
       else {
-        // Is a piece
-        if (this.chessboardState[r][c] !== '') {
-          this.highlightedSquares = getPossibleMoves(r, c);
-          this.selectedPiece = [r, c];
-        // Is an empty square
-        } else {
-          this.highlightedSquares = [];
+        this.highlightedSquares = getPossibleMoves(r, c);
+        // Is not a piece/that players move
+        if (this.highlightedSquares.length === 0)
           this.selectedPiece = null;
-        }
+        else
+          this.selectedPiece = [r, c];
       }
     },
     isHighlighted(r, c) {

@@ -7,10 +7,12 @@
 // var blackQueenRookMoved = false;
 // var blackKingRookMoved = false;
 
+var isWhitesTurn = true;
 
 // Chessboard, using index r, c
 // r = rows
 // c = columns
+// Uppercase letters are white
 var chessboardState = [
   ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'],
   ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
@@ -27,8 +29,15 @@ function getChessboardState() {
   return chessboardState;
 }
 
+function isWhitePiece(piece) {
+  return piece === piece.toUpperCase();
+}
+
 function getPossibleMoves(r, c) {
   let piece = getChessboardState()[r][c];
+  // If not that players turn
+  if (isWhitesTurn !== isWhitePiece(piece))
+    return [];
   switch(piece) {
     case 'P':
       if (r === 6)
@@ -45,6 +54,7 @@ function getPossibleMoves(r, c) {
 
 // Mutations
 function movePiece(or, oc, nr, nc) {
+  isWhitesTurn = !isWhitesTurn
   console.log([or, oc, nr, nc]);
   let piece = getChessboardState()[or][oc];
   chessboardState[or][oc] = '';
