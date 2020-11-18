@@ -35,20 +35,13 @@ function isWhitePiece(piece) {
 
 function getPossibleMoves(r, c) {
   let piece = getChessboardState()[r][c];
+  let isWhite = isWhitePiece(piece);
   // If not that players turn
-  if (isWhitesTurn !== isWhitePiece(piece))
+  if (isWhitesTurn !== isWhite)
     return [];
-  switch(piece) {
-    case 'P':
-      if (r === 6)
-        return [[r-1, c], [r-2, c]];
-      return [[r-1, c]]; 
+  switch(piece.toLowerCase()) {
     case 'p':
-      if (r === 1)
-        return [[r+1, c], [r+2, c]];
-      return [[r+1, c]]; 
-    default:
-      return [];
+      return pawn(r, c, isWhite);
   }
 }
 
@@ -59,7 +52,19 @@ function movePiece(or, oc, nr, nc) {
   let piece = getChessboardState()[or][oc];
   chessboardState[or][oc] = '';
   chessboardState[nr][nc] = piece;
+}
 
+// Calculate moves for each piece
+function pawn(r, c, isWhite) {
+  if (isWhite) {
+    if (r === 6)
+      return [[r-1, c], [r-2, c]];
+    return [[r-1, c]]; 
+  } else {
+    if (r === 1)
+      return [[r+1, c], [r+2, c]];
+    return [[r+1, c]]; 
+  }
 }
 
 export {
