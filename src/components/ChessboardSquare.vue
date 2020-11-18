@@ -13,9 +13,16 @@ export default {
     piece: String
   },
   methods: {
+    isUpperCase(char) {
+      return char === char.toUpperCase();
+    },
     getImgUrl(piece) {
-      var images = require.context('../assets/pieces', false, /\.png$/)
-      return images('./' + piece + ".png")
+      var white = require.context('../assets/pieces/white', false, /\.png$/)
+      var black = require.context('../assets/pieces/black', false, /\.png$/)
+      if (this.isUpperCase(piece))
+        return white('./' + piece + ".png");
+      else
+        return black('./' + piece + ".png");
     },
     generateClass() {
       let returnClass = "chess-square";
