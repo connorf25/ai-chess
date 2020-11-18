@@ -42,6 +42,8 @@ function getPossibleMoves(r, c) {
   switch(piece.toLowerCase()) {
     case 'p':
       return pawn(r, c, isWhite);
+    default:
+      return [];
   }
 }
 
