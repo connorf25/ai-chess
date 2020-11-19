@@ -29,13 +29,18 @@ function getChessboardState() {
   return chessboardState;
 }
 
-function isWhitePiece(piece) {
+function isWhitePiece(r, c) {
+  let piece = getChessboardState()[r][c];
   return piece === piece.toUpperCase();
+}
+
+function isPiece(r, c) {
+  return getChessboardState()[r][c] !== '' ? true : false;
 }
 
 function getPossibleMoves(r, c) {
   let piece = getChessboardState()[r][c];
-  let isWhite = isWhitePiece(piece);
+  let isWhite = isWhitePiece(r, c);
   // If not that players turn
   if (isWhitesTurn !== isWhite)
     return [];
@@ -47,6 +52,44 @@ function getPossibleMoves(r, c) {
   }
 }
 
+// Calculate moves for each piece
+function pawn(r, c, isWhite) {
+  let possibleMoves = [];
+  let possibleAttacks = [];
+  let actualMoves = [];
+  let actualAttacks = [];
+  // Is White
+  if (isWhite) {
+    possibleAttacks = [[r-1, c-1], [r-1, c+1]];
+    if (r === 6)
+      possibleMoves = [[r-1, c], [r-2, c]];
+    else
+      possibleMoves = [[r-1, c]]; 
+  } 
+  // Is Black
+  else {
+    possibleAttacks = [[r+1, c-1], [r+1, c+1]];
+    if (r === 1)
+      possibleMoves = [[r+1, c], [r+2, c]];
+    else
+      possibleMoves = [[r+1, c]]; 
+  }
+  possibleMoves.some(move => {
+    if (isPiece(move[0], move[1])) {
+      return true;
+    } else {
+      actualMoves.push(move);
+      return false;
+    }
+  })
+  possibleAttacks.forEach(move => {
+    if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1])))
+      actualAttacks.push(move);
+  })
+  // Return moves
+  return actualMoves.concat(actualAttacks);
+}
+
 // Mutations
 function movePiece(or, oc, nr, nc) {
   isWhitesTurn = !isWhitesTurn
@@ -54,19 +97,6 @@ function movePiece(or, oc, nr, nc) {
   let piece = getChessboardState()[or][oc];
   chessboardState[or][oc] = '';
   chessboardState[nr][nc] = piece;
-}
-
-// Calculate moves for each piece
-function pawn(r, c, isWhite) {
-  if (isWhite) {
-    if (r === 6)
-      return [[r-1, c], [r-2, c]];
-    return [[r-1, c]]; 
-  } else {
-    if (r === 1)
-      return [[r+1, c], [r+2, c]];
-    return [[r+1, c]]; 
-  }
 }
 
 export {
