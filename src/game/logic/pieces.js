@@ -44,8 +44,27 @@ function pawn(r, c, isWhite) {
   return actualMoves.concat(actualAttacks);
 }
 
-function rook(r, c, isWhite) {
-  let possibleDirections = ['[r+i, c]', '[r-i, c]', '[r, c+i]', '[r, c-i]']
+function knight(r, c, isWhite) {
+  let possibleMoves = [[r+2, c+1], [r+2, c-1], [r-2, c+1], [r-2, c-1], [r+1, c+2], [r+1, c-2], [r-1, c+2], [r-1, c-2]];
+  let actualMoves = [];
+  let actualAttacks = [];
+  possibleMoves.forEach(move => {
+    // Check if move exists on board
+    if (!squareExists(move[0], move[1]))
+      return;
+    // No piece occupies
+    if (!isPiece(move[0], move[1])) {
+      actualMoves.push(move);
+    }
+    // Else check if enemy piece
+    else if (isWhite !== isWhitePiece(move[0], move[1])) {
+      actualAttacks.push(move);
+    }
+  })
+  return actualMoves.concat(actualAttacks);
+}
+
+function directionalPiece(r, c, isWhite, possibleDirections) {
   let actualMoves = [];
   let actualAttacks = [];
   possibleDirections.forEach(direction => {
@@ -73,28 +92,25 @@ function rook(r, c, isWhite) {
   return actualMoves.concat(actualAttacks);
 }
 
-function knight(r, c, isWhite) {
-  let possibleMoves = [[r+2, c+1], [r+2, c-1], [r-2, c+1], [r-2, c-1], [r+1, c+2], [r+1, c-2], [r-1, c+2], [r-1, c-2]];
-  let actualMoves = [];
-  let actualAttacks = [];
-  possibleMoves.forEach(move => {
-    // Check if move exists on board
-    if (!squareExists(move[0], move[1]))
-      return;
-    // No piece occupies
-    if (!isPiece(move[0], move[1])) {
-      actualMoves.push(move);
-    }
-    // Else check if enemy piece
-    else if (isWhite !== isWhitePiece(move[0], move[1])) {
-      actualAttacks.push(move);
-    }
-  })
-  return actualMoves.concat(actualAttacks);
+function rook(r, c, isWhite) {
+  let possibleDirections = ['[r+i, c]', '[r-i, c]', '[r, c+i]', '[r, c-i]']
+  return directionalPiece(r, c, isWhite, possibleDirections);
+}
+
+function bishop(r, c, isWhite) {
+  let possibleDirections = ['[r+i, c+i]', '[r-i, c-i]', '[r-i, c+i]', '[r+i, c-i]']
+  return directionalPiece(r, c, isWhite, possibleDirections);
+}
+
+function queen(r, c, isWhite) {
+  let possibleDirections = ['[r+i, c]', '[r-i, c]', '[r, c+i]', '[r, c-i]', '[r+i, c+i]', '[r-i, c-i]', '[r-i, c+i]', '[r+i, c-i]']
+  return directionalPiece(r, c, isWhite, possibleDirections);
 }
 
 export { 
   pawn,
   knight,
-  rook
+  rook,
+  bishop,
+  queen
 }
