@@ -38,6 +38,13 @@ function isPiece(r, c) {
   return getChessboardState()[r][c] !== '' ? true : false;
 }
 
+function squareExists(r, c) {
+  if (r < 0 || r > 7 || c < 0 || c > 7)
+    return false;
+  else
+    return true;
+}
+
 function getPossibleMoves(r, c) {
   let piece = getChessboardState()[r][c];
   let isWhite = isWhitePiece(r, c);
@@ -47,12 +54,15 @@ function getPossibleMoves(r, c) {
   switch(piece.toLowerCase()) {
     case 'p':
       return pawn(r, c, isWhite);
+    case 'n':
+      return knight(r, c, isWhite);
     default:
       return [];
   }
 }
 
 // Calculate moves for each piece
+// {{{
 function pawn(r, c, isWhite) {
   let possibleMoves = [];
   let possibleAttacks = [];
@@ -90,10 +100,30 @@ function pawn(r, c, isWhite) {
   return actualMoves.concat(actualAttacks);
 }
 
+function knight(r, c, isWhite) {
+  let possibleMoves = [[r+2, c+1], [r+2, c-1], [r-2, c+1], [r-2, c-1], [r+1, c+2], [r+1, c-2], [r-1, c+2], [r-1, c-2]];
+  let actualMoves = [];
+  let actualAttacks = [];
+  possibleMoves.forEach(move => {
+    // Check if move exists on board
+    if (!squareExists(move[0], move[1]))
+      return;
+    // No piece occupies
+    if (!isPiece(move[0], move[1])) {
+      actualMoves.push(move);
+    }
+    // Else check if enemy piece
+    else if (isWhite !== isWhitePiece(move[0], move[1])) {
+      actualAttacks.push(move);
+    }
+  })
+  return actualMoves.concat(actualAttacks);
+}
+// }}}
+
 // Mutations
 function movePiece(or, oc, nr, nc) {
   isWhitesTurn = !isWhitesTurn
-  console.log([or, oc, nr, nc]);
   let piece = getChessboardState()[or][oc];
   chessboardState[or][oc] = '';
   chessboardState[nr][nc] = piece;

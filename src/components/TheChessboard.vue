@@ -28,10 +28,8 @@ export default {
   },
   methods: {
     onClickSquare(r, c) {
-      console.log([r, c])
       // Move a Piece
       if (this.selectedPiece && this.isHighlighted(r, c)) {
-        console.log("Moving piece")
         // Move piece to that square
         movePiece(this.selectedPiece[0], this.selectedPiece[1], r, c);
         this.highlightedSquares = [];
