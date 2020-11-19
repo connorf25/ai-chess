@@ -45,88 +45,31 @@ function pawn(r, c, isWhite) {
 }
 
 function rook(r, c, isWhite) {
+  let possibleDirections = ['[r+i, c]', '[r-i, c]', '[r, c+i]', '[r, c-i]']
   let actualMoves = [];
   let actualAttacks = [];
-  for (let i = 1; i < 8; i++) {
-    let move = [r+i, c]
-    // Does the square exist
-    if (!squareExists(move[0], move[1])) {
-      break;
+  possibleDirections.forEach(direction => {
+    for (let i = 1; i < 8; i++) {
+      let move = eval(direction);
+      // Does the square exist
+      if (!squareExists(move[0], move[1])) {
+        break;
+      }
+      // Is it an enemy piece
+      else if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1]))) {
+        actualAttacks.push(move);
+        break;
+      }
+      // Is it a friendly piece
+      else if (isPiece(move[0], move[1])) {
+        break;
+      }
+      // Square is vacant
+      else {
+        actualMoves.push(move);
+      }
     }
-    // Is it an enemy piece
-    else if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1]))) {
-      actualAttacks.push(move);
-      break;
-    }
-    // Is it a friendly piece
-    else if (isPiece(move[0], move[1])) {
-      break;
-    }
-    // Square is vacant
-    else {
-      actualMoves.push(move);
-    }
-  }
-  for (let i = 1; i < 8; i++) {
-    let move = [r-i, c]
-    // Does the square exist
-    if (!squareExists(move[0], move[1])) {
-      break;
-    }
-    // Is it an enemy piece
-    else if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1]))) {
-      actualAttacks.push(move);
-      break;
-    }
-    // Is it a friendly piece
-    else if (isPiece(move[0], move[1])) {
-      break;
-    }
-    // Square is vacant
-    else {
-      actualMoves.push(move);
-    }
-  }
-  for (let i = 1; i < 8; i++) {
-    let move = [r, c+i]
-    // Does the square exist
-    if (!squareExists(move[0], move[1])) {
-      break;
-    }
-    // Is it an enemy piece
-    else if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1]))) {
-      actualAttacks.push(move);
-      break;
-    }
-    // Is it a friendly piece
-    else if (isPiece(move[0], move[1])) {
-      break;
-    }
-    // Square is vacant
-    else {
-      actualMoves.push(move);
-    }
-  }
-  for (let i = 1; i < 8; i++) {
-    let move = [r, c-i]
-    // Does the square exist
-    if (!squareExists(move[0], move[1])) {
-      break;
-    }
-    // Is it an enemy piece
-    else if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1]))) {
-      actualAttacks.push(move);
-      break;
-    }
-    // Is it a friendly piece
-    else if (isPiece(move[0], move[1])) {
-      break;
-    }
-    // Square is vacant
-    else {
-      actualMoves.push(move);
-    }
-  }
+  })
   return actualMoves.concat(actualAttacks);
 }
 
