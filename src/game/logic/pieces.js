@@ -44,6 +44,92 @@ function pawn(r, c, isWhite) {
   return actualMoves.concat(actualAttacks);
 }
 
+function rook(r, c, isWhite) {
+  let actualMoves = [];
+  let actualAttacks = [];
+  for (let i = 1; i < 8; i++) {
+    let move = [r+i, c]
+    // Does the square exist
+    if (!squareExists(move[0], move[1])) {
+      break;
+    }
+    // Is it an enemy piece
+    else if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1]))) {
+      actualAttacks.push(move);
+      break;
+    }
+    // Is it a friendly piece
+    else if (isPiece(move[0], move[1])) {
+      break;
+    }
+    // Square is vacant
+    else {
+      actualMoves.push(move);
+    }
+  }
+  for (let i = 1; i < 8; i++) {
+    let move = [r-i, c]
+    // Does the square exist
+    if (!squareExists(move[0], move[1])) {
+      break;
+    }
+    // Is it an enemy piece
+    else if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1]))) {
+      actualAttacks.push(move);
+      break;
+    }
+    // Is it a friendly piece
+    else if (isPiece(move[0], move[1])) {
+      break;
+    }
+    // Square is vacant
+    else {
+      actualMoves.push(move);
+    }
+  }
+  for (let i = 1; i < 8; i++) {
+    let move = [r, c+i]
+    // Does the square exist
+    if (!squareExists(move[0], move[1])) {
+      break;
+    }
+    // Is it an enemy piece
+    else if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1]))) {
+      actualAttacks.push(move);
+      break;
+    }
+    // Is it a friendly piece
+    else if (isPiece(move[0], move[1])) {
+      break;
+    }
+    // Square is vacant
+    else {
+      actualMoves.push(move);
+    }
+  }
+  for (let i = 1; i < 8; i++) {
+    let move = [r, c-i]
+    // Does the square exist
+    if (!squareExists(move[0], move[1])) {
+      break;
+    }
+    // Is it an enemy piece
+    else if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1]))) {
+      actualAttacks.push(move);
+      break;
+    }
+    // Is it a friendly piece
+    else if (isPiece(move[0], move[1])) {
+      break;
+    }
+    // Square is vacant
+    else {
+      actualMoves.push(move);
+    }
+  }
+  return actualMoves.concat(actualAttacks);
+}
+
 function knight(r, c, isWhite) {
   let possibleMoves = [[r+2, c+1], [r+2, c-1], [r-2, c+1], [r-2, c-1], [r+1, c+2], [r+1, c-2], [r-1, c+2], [r-1, c-2]];
   let actualMoves = [];
@@ -64,4 +150,8 @@ function knight(r, c, isWhite) {
   return actualMoves.concat(actualAttacks);
 }
 
-export { pawn, knight }
+export { 
+  pawn,
+  knight,
+  rook
+}

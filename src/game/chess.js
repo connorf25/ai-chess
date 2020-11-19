@@ -1,5 +1,5 @@
 import { isWhitePiece } from "./logic/helper.js"
-import { pawn, knight } from "./logic/pieces.js"
+import { pawn, rook, knight } from "./logic/pieces.js"
 
 // Keep track for castling
 // var whiteKingMoved = false;
@@ -41,6 +41,8 @@ function getPossibleMoves(r, c) {
   switch(piece.toLowerCase()) {
     case 'p':
       return pawn(r, c, isWhite);
+    case 'r':
+      return rook(r, c, isWhite);
     case 'n':
       return knight(r, c, isWhite);
     default:
