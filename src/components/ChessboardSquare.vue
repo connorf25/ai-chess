@@ -1,5 +1,5 @@
 <template>
-  <div :class="generateClass()">
+  <div :class="generateClass">
     <img v-if="piece" :src="getImgUrl(piece)" />
   </div>
 </template>
@@ -9,8 +9,23 @@ export default {
   name: 'ChessboardSquare',
   props: {
     isAlternative: Boolean,
-    isHighlighted: Boolean,
+    isMove: Boolean,
+    isAttack: Boolean,
     piece: String
+  },
+  computed: {
+    generateClass: function() {
+      let returnClass = "chess-square";
+      if (this.isAlternative)
+        returnClass += " light";
+      else
+        returnClass += " dark";
+      if (this.isMove)
+        returnClass += " move";
+      if (this.isAttack)
+        returnClass += " attack"
+      return returnClass;
+    }
   },
   methods: {
     isUpperCase(char) {
@@ -23,16 +38,6 @@ export default {
         return white('./' + piece + ".png");
       else
         return black('./' + piece + ".png");
-    },
-    generateClass() {
-      let returnClass = "chess-square";
-      if (this.isAlternative)
-        returnClass += " light";
-      else
-        returnClass += " dark";
-      if (this.isHighlighted)
-        returnClass += " highlight";
-      return returnClass
     }
   }
 }
@@ -52,7 +57,10 @@ export default {
 .dark {
   background-color: rgb(120, 120, 41);
 }
-.highlight {
-  background-color: aqua;
+.move {
+  background-color: rgba(0, 255, 255, 0.5);
+}
+.attack {
+  background-color: rgba(255, 0, 0, 0.5)
 }
 </style>

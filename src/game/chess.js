@@ -37,7 +37,7 @@ function getPossibleMoves(r, c) {
   let isWhite = isWhitePiece(r, c);
   // If not that players turn
   if (isWhitesTurn !== isWhite)
-    return [];
+    return { moves: [], attacks: [] };
   switch(piece.toLowerCase()) {
     case 'p':
       return pawn(r, c, isWhite);
@@ -50,7 +50,7 @@ function getPossibleMoves(r, c) {
     case 'q':
       return queen(r, c, isWhite);
     default:
-      return [];
+      return { moves: [], attacks: [] };
   }
 }
 

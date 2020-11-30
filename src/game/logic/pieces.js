@@ -4,8 +4,8 @@ import { squareExists, isPiece, isWhitePiece } from "./helper.js";
 function pawn(r, c, isWhite) {
   let possibleMoves = [];
   let possibleAttacks = [];
-  let actualMoves = [];
-  let actualAttacks = [];
+  let moves = [];
+  let attacks = [];
   // Is White
   if (isWhite) {
     possibleAttacks = [[r-1, c-1], [r-1, c+1]];
@@ -29,7 +29,7 @@ function pawn(r, c, isWhite) {
     if (isPiece(move[0], move[1])) {
       return true;
     } else {
-      actualMoves.push(move);
+      moves.push(move);
       return false;
     }
   })
@@ -38,35 +38,35 @@ function pawn(r, c, isWhite) {
     if (!squareExists(move[0], move[1]))
       return;
     if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1])))
-      actualAttacks.push(move);
+      attacks.push(move);
   })
   // Return moves
-  return actualMoves.concat(actualAttacks);
+  return { moves, attacks };
 }
 
 function knight(r, c, isWhite) {
   let possibleMoves = [[r+2, c+1], [r+2, c-1], [r-2, c+1], [r-2, c-1], [r+1, c+2], [r+1, c-2], [r-1, c+2], [r-1, c-2]];
-  let actualMoves = [];
-  let actualAttacks = [];
+  let moves = [];
+  let attacks = [];
   possibleMoves.forEach(move => {
     // Check if move exists on board
     if (!squareExists(move[0], move[1]))
       return;
     // No piece occupies
     if (!isPiece(move[0], move[1])) {
-      actualMoves.push(move);
+      moves.push(move);
     }
     // Else check if enemy piece
     else if (isWhite !== isWhitePiece(move[0], move[1])) {
-      actualAttacks.push(move);
+      attacks.push(move);
     }
   })
-  return actualMoves.concat(actualAttacks);
+  return { moves, attacks };
 }
 
 function directionalPiece(r, c, isWhite, possibleDirections) {
-  let actualMoves = [];
-  let actualAttacks = [];
+  let moves = [];
+  let attacks = [];
   possibleDirections.forEach(direction => {
     for (let i = 1; i < 8; i++) {
       let move = eval(direction);
@@ -76,7 +76,7 @@ function directionalPiece(r, c, isWhite, possibleDirections) {
       }
       // Is it an enemy piece
       else if (isPiece(move[0], move[1]) && (isWhite !== isWhitePiece(move[0], move[1]))) {
-        actualAttacks.push(move);
+        attacks.push(move);
         break;
       }
       // Is it a friendly piece
@@ -85,11 +85,11 @@ function directionalPiece(r, c, isWhite, possibleDirections) {
       }
       // Square is vacant
       else {
-        actualMoves.push(move);
+        moves.push(move);
       }
     }
   })
-  return actualMoves.concat(actualAttacks);
+  return { moves, attacks };
 }
 
 function rook(r, c, isWhite) {
